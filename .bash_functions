@@ -1,4 +1,12 @@
-## Creating Drupal projects by using DDEV 
+## Disabling, cleaning and enabling a Drupal module after executing changes.
+dclin () {
+  varkeyname=$1
+  ddev drush pmu $varkeyname
+  ddev drush cr
+  ddev drush en -y varkeyname
+}
+
+## Creating Drupal 9 projects by using DDEV. 
 d9ddev () {
   if [ -z "$1" ]
   then
@@ -17,6 +25,7 @@ d9ddev () {
   ddev start && ddev launch
 }
 
+## Creating Drupal 8 projects by using DDEV.
 d8ddev () {
     if [ -z "$1" ]
   then
