@@ -45,7 +45,7 @@ d9ddev () {
   yes | ddev composer create "drupal/recommended-project:^9"
   ddev composer require drush/drush drupal/admin_toolbar drupal/devel
   ddev exec drush si --site-name=$varkeyname --account-name=admin --account-pass=admin -y
-  ddev drush en -y admin_toolbar admin_toolbar_tools admin_toolbar_search admin_toolbar_links_access_filter devel
+  ddev drush en -y admin_toolbar admin_toolbar_tools admin_toolbar_search admin_toolbar_links_access_filter devel devel_generate
   ddev drush cr
   ddev start && ddev launch
 }
@@ -64,7 +64,7 @@ d8ddev () {
   yes | ddev composer create "drupal/recommended-project:^8"
   ddev composer require drush/drush drupal/admin_toolbar drupal/devel
   ddev exec drush si --site-name=$varkeyname --account-name=admin --account-pass=admin -y
-  ddev drush en -y admin_toolbar admin_toolbar_tools admin_toolbar_search admin_toolbar_links_access_filter devel
+  ddev drush en -y admin_toolbar admin_toolbar_tools admin_toolbar_search admin_toolbar_links_access_filter devel devel_generate
   ddev drush cr
   ddev start && ddev launch
 }
