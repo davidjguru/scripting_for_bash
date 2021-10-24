@@ -98,6 +98,7 @@ alias dxo='ddev xdebug on'
 alias dxf='ddev xdebug off'
 alias dcr='ddev composer require $@'
 alias dcm='ddev composer remove $@'
+alias drm='yes|ddev delete -O'
 
 ## Reviewing Codestyle Aliases  
 alias dcs1="ddev exec -d=/var/www/html vendor/bin/phpcs --standard=Drupal --extensions='php,module,inc,install,test,profile,theme,info,txt,md' web/modules/custom/"  
