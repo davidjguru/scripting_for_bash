@@ -33,9 +33,10 @@ lxclin () {
 ## Creating Drupal projects by using DDEV. 
 d9ddev () {
   if [ -z "$1" ]
-  then
+    then
       check=$(shuf -n1  /usr/share/dict/words)
-      varkeyname="${check::-2}"
+      shortened=${check::-2}
+      varkeyname=${shortened,,}
   else
       varkeyname=$1
   fi
@@ -51,9 +52,10 @@ d9ddev () {
 
 d8ddev () {
   if [ -z "$1" ]
-  then
+    then
       check=$(shuf -n1  /usr/share/dict/words)
-      varkeyname="${check::-2}"
+      shortened=${check::-2}
+      varkeyname=${shortened,,}
   else
       varkeyname=$1
   fi
