@@ -4,7 +4,7 @@ dclin () {
   varkeyname=$1
   ddev drush pmu $varkeyname
   ddev drush cr
-  ddev drush en -y varkeyname
+  ddev drush en -y $varkeyname
 }
 
 dxclin () {
