@@ -68,3 +68,12 @@ d8ddev () {
   ddev drush cr
   ddev start && ddev launch
 }
+
+## Destroy DDEV deploys by passing name within project folder.
+
+ddevdestroy () {
+  ddev stop
+  yes |ddev delete -O
+  cd ..
+  rm -rf $1
+}
