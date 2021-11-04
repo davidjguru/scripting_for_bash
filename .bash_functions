@@ -69,11 +69,28 @@ d8ddev () {
   ddev start && ddev launch
 }
 
-## Destroy DDEV deploys by passing name within project folder.
+## Prepares a Drupal 9 installation for testing with PHPUnit executing from project folder.
+d9phpunit () {
+  varkeyname=basename $(pwd)
+  string_url="<env name='BROWSERTEST_OUTPUT_BASE_URL' value='http://${varkeyname}.ddev.site/'/>"
+  ddev composer require --dev phpunit/phpunit symfony/phpunit-bridge \
+                              behat/mink-goutte-driver behat/mink-selenium2-driver \
+                              phpspec/prophecy-phpunit --with-all-dependencies
+  cd web/core
+  cp phpunit.xml.dist phpunit.xml
+  sed -i 's+<env name="SIMPLETEST_BASE_URL" value=""/>+<env name="SIMPLETEST_BASE_URL" value="http://localhost"/>+g' phpunit.xml
+  sed -i 's+<env name="SIMPLETEST_DB" value=""/>+<env name="SIMPLETEST_DB" value="mysql://db:db@db/db"/>+g' phpunit.xml
+  sed -i 's+<env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>+<env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/html/web/sites/default/simpletest/browser_output/"/>+g' phpunit.xml
+  sed -i 's+<env name="BROWSERTEST_OUTPUT_BASE_URL" value=""/>+'"$string_url"'+g' phpunit.xml
+  cd ../..
+  ddev exec ./vendor/bin/phpunit -c web/core /var/www/html/web/modules/contrib/admin_toolbar
+}
 
+## Destroy DDEV deploys by passing name within project folder.
 ddevdestroy () {
+  varkeyname=basename $(pwd)
   ddev stop
   yes |ddev delete -O
   cd ..
-  rm -rf $1
+  rm -rf $varkeyname
 }
