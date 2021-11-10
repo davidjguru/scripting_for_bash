@@ -86,6 +86,24 @@ d9phpunit () {
   ddev exec ./vendor/bin/phpunit -c web/core /var/www/html/web/modules/contrib/admin_toolbar
 }
 
+## Same but for Drupal 8.
+d8phpunit () {
+  varkeyname=basename $(pwd)
+  string_url="<env name='BROWSERTEST_OUTPUT_BASE_URL' value='http://${varkeyname}.ddev.site/'/>"
+  ddev composer require --dev phpunit/phpunit:^7 symfony/phpunit-bridge:^3.4.3 \
+                              behat/mink-goutte-driver:^1.2 behat/behat:^3.4 behat/mink:^1.8 \
+                              behat/mink-selenium2-driver:^1.5.0 --with-all-dependencies
+  cd web/core
+  cp phpunit.xml.dist phpunit.xml
+  sed -i 's+<env name="SIMPLETEST_BASE_URL" value=""/>+<env name="SIMPLETEST_BASE_URL" value="http://localhost"/>+g' phpunit.xml
+  sed -i 's+<env name="SIMPLETEST_DB" value=""/>+<env name="SIMPLETEST_DB" value="mysql://db:db@db/db"/>+g' phpunit.xml
+  sed -i 's+<env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>+<env name="BROWSERTEST_OUTPUT_DIRECTORY" value="/var/www/html/web/sites/default/simpletest/browser_output/"/>+g' phpunit.xml
+  sed -i 's+<env name="BROWSERTEST_OUTPUT_BASE_URL" value=""/>+'"$string_url"'+g' phpunit.xml
+  cd ../..
+  ddev exec ./vendor/bin/phpunit -c web/core /var/www/html/web/modules/contrib/admin_toolbar
+
+}
+
 ## Destroy DDEV deploys by passing name within project folder.
 ddevdestroy () {
   varkeyname=basename $(pwd)
