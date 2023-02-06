@@ -65,6 +65,7 @@ alias glc="git log --format=format: --name-only --since=12.month | egrep -v '^$'
 alias gld="git log --oneline --decorate --graph --all"  
 alias glp="git log -g --grep='PHP' -10 --pretty='%h - %s - %cn - %cd'"
 alias glf='git for-each-ref --sort=-committerdate'   
+alias gla="git log -g -20 --pretty=format:'%h%x09%an%x09%ad%x09%s'" 
 
 ### Pushing to basic branches 
 alias gpom='git push origin master'  
