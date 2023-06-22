@@ -105,3 +105,6 @@ alias drm='yes|ddev delete -O'
 alias dcs1="ddev exec -d=/var/www/html vendor/bin/phpcs --standard=Drupal --extensions='php,module,inc,install,test,profile,theme,info,txt,md' web/modules/custom/"  
 alias dcs2="ddev exec -d=/var/www/html vendor/bin/phpcs --standard=DrupalPractice --extensions='php,module,inc,install,test,profile,theme,info,txt,md' web/modules/custom/"  
 alias dcsr='ddev exec -d=/var/www/html vendor/bin/phpcs –report=diff'  
+
+## Java and Maven
+alias mvn2000="mvn clean process-resources && mvn dependency:purge-local-repository && mvn amiga-javaformat:apply && mvn clean install"
