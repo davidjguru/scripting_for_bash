@@ -99,7 +99,7 @@ d8ddev () {
 
 ## Prepares a Drupal 9 installation for testing with PHPUnit executing from project folder.
 d9phpunit () {
-  varkeyname=basename $(pwd)
+  varkeyname=${PWD##*/}
   string_url="<env name='BROWSERTEST_OUTPUT_BASE_URL' value='http://${varkeyname}.ddev.site/'/>"
   ddev composer require --dev phpunit/phpunit symfony/phpunit-bridge \
                               behat/mink-goutte-driver behat/mink-selenium2-driver \
@@ -116,7 +116,7 @@ d9phpunit () {
 
 ## Same but for Drupal 8.
 d8phpunit () {
-  varkeyname=basename $(pwd)
+  varkeyname=${PWD##*/}
   string_url="<env name='BROWSERTEST_OUTPUT_BASE_URL' value='http://${varkeyname}.ddev.site/'/>"
   ddev composer require --dev phpunit/phpunit:^7 symfony/phpunit-bridge:^3.4.3 \
                               behat/mink-goutte-driver:^1.2 behat/behat:^3.4 behat/mink:^1.8 \
@@ -132,9 +132,9 @@ d8phpunit () {
 
 }
 
-## Destroy DDEV deploys by passing name within project folder.
+## Destroy enabled Drupal site based in DDEV by name from project folder.
 ddevdestroy () {
-  varkeyname=basename $(pwd)
+  varkeyname=${PWD##*/}
   ddev stop
   yes |ddev delete -O
   cd ..
