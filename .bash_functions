@@ -31,6 +31,34 @@ lxclin () {
 }
 
 ## Creating Drupal projects by using DDEV. 
+
+d10ddev () {
+  # If you don't provide a name the script will get a random name for the site.
+  if [ -z "$1" ]
+  then
+      check=$(shuf -n1  /usr/share/dict/words)
+      shortened=${check::-2}
+      varkeyname=${shortened,,}
+  else
+      varkeyname=$1
+  fi
+  # Create main project folder.
+  mkdir $varkeyname && cd $varkeyname
+  # Prepare basic configuration.
+  ddev config --project-type=drupal10 --docroot=web --create-docroot
+  yes | ddev composer create "drupal/recommended-project:^10"
+  # Require some extra Drupal resources.
+  ddev composer require drush/drush drupal/admin_toolbar drupal/devel drupal/coffee
+  ddev composer update --lock
+  # Execute site install.
+  ddev exec drush si --site-name=$varkeyname --account-name=admin --account-pass=admin -y
+  # Enable modules and clean cache.
+  ddev drush en -y admin_toolbar admin_toolbar_tools admin_toolbar_search admin_toolbar_links_access_filter devel devel_generate coffee
+  ddev drush cr
+  # Start the new site and open it in browser.
+  ddev start && ddev launch
+}
+
 d9ddev () {
   if [ -z "$1" ]
     then
