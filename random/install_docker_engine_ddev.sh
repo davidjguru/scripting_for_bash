@@ -45,29 +45,28 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] \
 https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
   sudo apt update
 
   # Install Docker packages
   sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-  # Configure Docker user group
+  # Configure Docker user group and permissions
   echo -e "\n\e[1;4;31mConfiguring Docker group permissions...\e[0m"
   sudo groupadd docker || true
   sudo usermod -aG docker "$USER"
-
   echo -e "\n\e[1;4;31mGranting Docker socket permissions...\e[0m"
   sudo chmod 666 /var/run/docker.sock
 
   # Docker validation
   echo -e "\n\e[1;4;31mDocker status:\e[0m"
   systemctl is-active docker
-
+  sleep 3
   echo -e "\n\e[1;4;31mDocker version:\e[0m"
   docker --version
-
+  sleep 3
   echo -e "\n\e[1;4;31mRunning Docker hello-world test...\e[0m"
   docker run hello-world
+  sleep 3
 
   # Install DDEV
   echo -e "\n\e[1;4;31mInstalling DDEV...\e[0m"
@@ -93,9 +92,10 @@ https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_C
 
     echo -e "\n\e[1;4;31mRunning mkcert one-time initialization...\e[0m"
     mkcert -install
-
+    sleep 3
     echo -e "\n\e[1;4;31mDDEV version:\e[0m"
     ddev version
+    sleep 3
   fi
 
   # Ask for if a new Drupal project is required
@@ -110,7 +110,7 @@ https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_C
     KEYNAME=${SHORTENED,,}
     mkdir $KEYNAME
     cd $KEYNAME
-    ddev config --project-type=drupal10 --docroot=web --create-docroot
+    ddev config --project-type=drupal10 --docroot=web
     yes | ddev composer create "drupal/recommended-project:^10"
     ddev composer require drush/drush drupal/admin_toolbar drupal/devel drupal/coffee
     ddev composer update --lock
