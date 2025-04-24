@@ -3,9 +3,10 @@
 #
 #-----------------------------------------------------------------------------------------
 # Install Docker Engine and DDEV on Ubuntu
-# [David Rodríguez, @davidjguru] [davidjguru@gmail.com]
+# Author: [David Rodríguez, @davidjguru] [davidjguru@gmail.com]
 # Title: install_docker_engine_ddev
 # Description: Install the latest available versions of Docker Engine and DDEV.
+# Date: 2025-24-04
 #
 # Links:
 # - https://www.therussianlullaby.com
