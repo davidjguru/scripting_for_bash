@@ -55,7 +55,6 @@ https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_C
   echo -e "\n\e[1;4;31mConfiguring Docker group permissions...\e[0m"
   sudo groupadd docker || true
   sudo usermod -aG docker "$USER"
-  newgrp docker
 
   echo -e "\n\e[1;4;31mGranting Docker socket permissions...\e[0m"
   sudo chmod 666 /var/run/docker.sock
@@ -106,19 +105,22 @@ https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_C
 
   if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo -e "\n\e[1;4;31mCreating a new DDEV project...\e[0m"
-    read -p "Enter the project name: " PROJECT_NAME
-    mkdir "$PROJECT_NAME"
-    cd "$PROJECT_NAME"
+    CHECK=$(shuf -n1  /usr/share/dict/words)
+    SHORTENED=${CHECK::-2}
+    KEYNAME=${SHORTENED,,}
+    mkdir $KEYNAME
+    cd $KEYNAME
     ddev config --project-type=drupal10 --docroot=web --create-docroot
     yes | ddev composer create "drupal/recommended-project:^10"
     ddev composer require drush/drush drupal/admin_toolbar drupal/devel drupal/coffee
     ddev composer update --lock
-    ddev exec drush si --site-name=$PROJECT_NAME --account-name=admin --account-pass=admin -y
+    ddev exec drush si --site-name=$KEYNAME --account-name=admin --account-pass=admin -y
     ddev drush en -y admin_toolbar admin_toolbar_tools admin_toolbar_search admin_toolbar_links_access_filter devel devel_generate coffee
     ddev drush cr
-    ddev start && ddev launch
-    echo -e "\n\e[1;4;31mDDEV project '$PROJECT_NAME' has been created and started.\e[0m"
-    echo -e "\e[1;4;31mYou can now access it at: http://$PROJECT_NAME.ddev.site\e[0m"
+    ddev start
+    xdg-open $(ddev drush uli --uid=1)
+    echo -e "\n\e[1;4;31mDDEV project '$KEYNAME' has been created and started.\e[0m"
+    echo -e "\e[1;4;31mYou can now access it at: http://$KEYNAME.ddev.site\e[0m"
   else
     echo -e "\n\e[1;4;31mNo project created. You can always create one later using 'ddev config'.\e[0m"
   fi
